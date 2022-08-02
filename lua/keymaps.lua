@@ -1,53 +1,42 @@
-local key_map = {}
+local setkm = vim.api.nvim_set_keymap
 
-key_map['n'] = {
+local opt = {noremap = true, silent = true}
 
-    ['<Esc><Esc>'] = ':nohl<CR>',
+-- Normal Mode
+setkm('n', '<Esc><Esc>', ':nohl<CR>', opt)
 
-    ['<A-h>'] = 'X',
-    ['<A-l>'] = 'x',
-    ['<A-j>'] = '<Esc>o',
+setkm('n', 'x',     '"_x',      opt)
+setkm('n', '<Del>', '"_<Del>',  opt)
+setkm('n', 'X',     '"_X',      opt)
+setkm('n', 's',     '"_s',      opt)
+setkm('n', 'S',     '"_S',      opt)
 
-    ['<C-h>'] = '5<Left>',
-    ['<C-l>'] = '5<Right>',
-    ['<C-j>'] = '5<Down>',
-    ['<C-k>'] = '5<UP>',
-    nil
-};
+setkm('n', '<A-h>', 'X',        opt)
+setkm('n', '<A-l>', 'x',        opt)
+setkm('n', '<A-j>', 'o',        opt)
+setkm('n', '<A-k>', 'O',        opt)
 
-key_map['i'] = {
-    ['<A-h>'] = '<BS>',
-    ['<A-l>'] = '<Delete>',
-    ['<A-j>'] = '<Esc>o',
+-- Insert Mode
+setkm('i', '<A-h>', '<BS>',     opt)
+setkm('i', '<A-l>', '<Delete>', opt)
+setkm('i', '<A-k>', '<Esc>O',   opt)
+setkm('i', '<A-j>', '<Esc>o',   opt)
 
-    ['<C-h>'] = '<Left>',
-    ['<C-l>'] = '<Right>',
-    ['<C-j>'] = '<Down>',
-    ['<C-k>'] = '<UP>',
-    ['<C-o>'] = '<Esc>',
-    nil
-};
+setkm('i', '<C-h>', '<Left>',   opt)
+setkm('i', '<C-l>', '<Right>',  opt)
+setkm('i', '<C-k>', '<UP>',     opt)
+setkm('i', '<C-j>', '<Down>',   opt)
 
--- local get_com_str = vim.o.commentstring
--- 
--- local _str = string.gsub(get_com_str, '%%s', ' \\1')
--- local com_str = ':s/\\(.*\\)/'.._str..'<CR>:nohl<CR>'
--- 
--- local _str = string.gsub(get_com_str, '%%s', ' \\(.*\\)')
--- local uncom_str =  ':s/'.._str..'/\\1/<CR>:nohl<CR>'
--- 
--- key_map['v'] = {
---     ['/'] = com_str, -- comment out
---     ['?'] = uncom_str, -- uncomment out
---     nil
--- }
+setkm('i', '<C-o>', '<Esc>',    opt)
+setkm('i', '<C-c>', '<Esc>:',    opt)
 
-local set_km = vim.api.nvim_set_keymap
-
-local _temp = {noremap = true, silent = true}
-
-for mode, inputs in pairs(key_map) do
-    for km, cmd in pairs(inputs) do
-        set_km(mode, km, cmd, _temp)
-    end
+-- Move 5
+for _, v in ipairs{'n', 'v'} do
+  setkm(v, '<C-h>', '5<Left>',  opt)
+  setkm(v, '<C-l>', '5<Right>', opt)
+  setkm(v, '<C-j>', '5<Down>',  opt)
+  setkm(v, '<C-k>', '5<UP>',    opt)
 end
+
+-- Comment Out
+--  *move to ./lua/autocmd.lua*
